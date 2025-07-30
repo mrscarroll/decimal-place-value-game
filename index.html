@@ -3,42 +3,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Place Value Decimals Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Place Value Decimals Game with Classroom Features & Fractions</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
+      margin: 0;
+      padding: 20px;
+      background: #f4f8ff;
+    }
+    h1 {
+      margin-bottom: 10px;
     }
     .blocks, .place-values {
       display: flex;
       justify-content: center;
-      margin: 20px;
+      margin: 20px 0;
+      flex-wrap: wrap;
     }
     .block, .place {
       margin: 0 10px;
       text-align: center;
+      user-select: none;
+    }
+    .block {
+      width: 70px;
+      height: 100px;
+      border: 2px solid #444;
+      border-radius: 10px;
+      background: #fff;
+      cursor: grab;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+    .block img {
+      max-width: 50px;
+      height: auto;
+      pointer-events: none;
     }
     .place {
-      width: 100px;
-      height: 200px;
+      width: 120px;
+      min-height: 180px;
       border: 2px dashed #888;
+      background-color: #fff;
+      border-radius: 8px;
       padding: 10px;
-      background-color: #f0f0f0;
+      box-sizing: border-box;
+      vertical-align: top;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
-    .target-area {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 1.5em;
+    .place p {
+      font-weight: bold;
+      margin: 5px 0 10px 0;
+      user-select: none;
+    }
+    .place p small {
+      font-size: 0.75em;
+      font-style: italic;
+      color: #555;
+      display: block;
+      margin-top: 3px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
     }
     #feedback {
       margin-top: 10px;
       font-weight: bold;
+      font-size: 1.2em;
+      min-height: 24px;
+    }
+    .stats {
+      font-size: 1.1em;
+      margin-top: 10px;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-  <h1>Place Value Move (Decimals)</h1>
+  <h1>Place Value Decimals Game</h1>
 
   <div class="target-area">
     <h2>🎯 Target Number: <span id="target-number">1.234</span></h2>
@@ -49,43 +109,63 @@
 
   <div class="blocks">
     <div class="block" draggable="true" data-value="1">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Base_ten_block_cube.svg/120px-Base_ten_block_cube.svg.png" alt="1 block">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Base_ten_block_cube.svg/120px-Base_ten_block_cube.svg.png" alt="1 block" />
       <div>1</div>
     </div>
     <div class="block" draggable="true" data-value="0.1">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Base_ten_block_flat.svg/120px-Base_ten_block_flat.svg.png" alt="0.1 block">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Base_ten_block_flat.svg/120px-Base_ten_block_flat.svg.png" alt="0.1 block" />
       <div>0.1</div>
     </div>
     <div class="block" draggable="true" data-value="0.01">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Base_ten_block_rod.svg/120px-Base_ten_block_rod.svg.png" alt="0.01 block">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Base_ten_block_rod.svg/120px-Base_ten_block_rod.svg.png" alt="0.01 block" />
       <div>0.01</div>
     </div>
     <div class="block" draggable="true" data-value="0.001">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Base_ten_block_cube.svg/40px-Base_ten_block_cube.svg.png" alt="0.001 block">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Base_ten_block_cube.svg/40px-Base_ten_block_cube.svg.png" alt="0.001 block" />
       <div>0.001</div>
     </div>
   </div>
 
   <div class="place-values">
-    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="1">Ones</div>
-    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.1">Tenths</div>
-    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.01">Hundredths</div>
-    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.001">Thousandths</div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="1">
+      <p>Ones</p>
+    </div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.1">
+      <p>Tenths<br><small><i>1/10</i></small></p>
+    </div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.01">
+      <p>Hundredths<br><small><i>1/100</i></small></p>
+    </div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.001">
+      <p>Thousandths<br><small><i>1/1000</i></small></p>
+    </div>
   </div>
 
   <h3>Total: <span id="total">0.000</span></h3>
+
   <button onclick="clearBlocks()">Clear</button>
+  <button onclick="submitScore()">Submit Score</button>
+
+  <div class="stats">
+    ✅ Correct: <span id="correct-count">0</span> | ❌ Incorrect: <span id="incorrect-count">0</span> | ⏱️ Time: <span id="timer">0</span> seconds
+  </div>
 
   <script>
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let seconds = 0;
+    let timerInterval;
+
     function allowDrop(ev) {
       ev.preventDefault();
     }
 
     function drop(ev) {
       ev.preventDefault();
-      var value = parseFloat(ev.dataTransfer.getData("text"));
-      var place = ev.currentTarget;
-      var clone = document.querySelector('[data-value="' + value + '"]').cloneNode(true);
+      let value = ev.dataTransfer.getData("text");
+      let place = ev.currentTarget;
+      // Clone the dragged block and make it not draggable inside the drop zone
+      let clone = document.querySelector('.block[data-value="' + value + '"]').cloneNode(true);
       clone.setAttribute("draggable", "false");
       place.appendChild(clone);
       updateTotal();
@@ -109,15 +189,28 @@
 
     function clearBlocks() {
       document.querySelectorAll('.place').forEach(place => {
-        place.innerHTML = place.getAttribute("data-place");
+        let label = "";
+        let placeVal = place.getAttribute("data-place");
+        if (placeVal === "1") label = "Ones";
+        else if (placeVal === "0.1") label = "Tenths";
+        else if (placeVal === "0.01") label = "Hundredths";
+        else if (placeVal === "0.001") label = "Thousandths";
+        place.innerHTML = "<p>" + label + "</p>";
+        if (placeVal === "0.1") place.innerHTML = "<p>Tenths<br><small><i>1/10</i></small></p>";
+        if (placeVal === "0.01") place.innerHTML = "<p>Hundredths<br><small><i>1/100</i></small></p>";
+        if (placeVal === "0.001") place.innerHTML = "<p>Thousandths<br><small><i>1/1000</i></small></p>";
       });
       document.getElementById("total").textContent = "0.000";
+      document.getElementById("feedback").textContent = "";
+      stopTimer();
+      startTimer();
     }
 
     function generateTarget() {
       const target = (Math.random() * 9.999).toFixed(3);
       document.getElementById("target-number").textContent = target;
-      document.getElementById("feedback").textContent = '';
+      document.getElementById("feedback").textContent = "";
+      clearBlocks();
     }
 
     function checkAnswer() {
@@ -128,13 +221,41 @@
       if (Math.abs(total - target) < 0.001) {
         feedback.textContent = "✅ Correct! Great job!";
         feedback.style.color = "green";
+        correctCount++;
+        document.getElementById("correct-count").textContent = correctCount;
+        stopTimer();
       } else {
         feedback.textContent = "❌ Try again!";
         feedback.style.color = "red";
+        incorrectCount++;
+        document.getElementById("incorrect-count").textContent = incorrectCount;
       }
     }
 
-    window.onload = generateTarget;
+    function startTimer() {
+      seconds = 0;
+      document.getElementById("timer").textContent = seconds;
+      timerInterval = setInterval(() => {
+        seconds++;
+        document.getElementById("timer").textContent = seconds;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function submitScore() {
+      alert(`📨 Your score:
+✅ Correct: ${correctCount}
+❌ Incorrect: ${incorrectCount}
+⏱️ Time: ${seconds} seconds`);
+    }
+
+    window.onload = () => {
+      generateTarget();
+      startTimer();
+    };
   </script>
 </body>
 </html>
