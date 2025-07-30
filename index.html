@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Place Value Decimals Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+    .blocks, .place-values {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+    .block, .place {
+      margin: 0 10px;
+      text-align: center;
+    }
+    .place {
+      width: 100px;
+      height: 200px;
+      border: 2px dashed #888;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+    .target-area {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.5em;
+    }
+    #feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Place Value Move (Decimals)</h1>
+
+  <div class="target-area">
+    <h2>🎯 Target Number: <span id="target-number">1.234</span></h2>
+    <button onclick="checkAnswer()">Check Answer</button>
+    <button onclick="generateTarget()">New Target</button>
+    <div id="feedback"></div>
+  </div>
+
+  <div class="blocks">
+    <div class="block" draggable="true" data-value="1">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Base_ten_block_cube.svg/120px-Base_ten_block_cube.svg.png" alt="1 block">
+      <div>1</div>
+    </div>
+    <div class="block" draggable="true" data-value="0.1">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Base_ten_block_flat.svg/120px-Base_ten_block_flat.svg.png" alt="0.1 block">
+      <div>0.1</div>
+    </div>
+    <div class="block" draggable="true" data-value="0.01">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Base_ten_block_rod.svg/120px-Base_ten_block_rod.svg.png" alt="0.01 block">
+      <div>0.01</div>
+    </div>
+    <div class="block" draggable="true" data-value="0.001">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Base_ten_block_cube.svg/40px-Base_ten_block_cube.svg.png" alt="0.001 block">
+      <div>0.001</div>
+    </div>
+  </div>
+
+  <div class="place-values">
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="1">Ones</div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.1">Tenths</div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.01">Hundredths</div>
+    <div class="place" ondrop="drop(event)" ondragover="allowDrop(event)" data-place="0.001">Thousandths</div>
+  </div>
+
+  <h3>Total: <span id="total">0.000</span></h3>
+  <button onclick="clearBlocks()">Clear</button>
+
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      var value = parseFloat(ev.dataTransfer.getData("text"));
+      var place = ev.currentTarget;
+      var clone = document.querySelector('[data-value="' + value + '"]').cloneNode(true);
+      clone.setAttribute("draggable", "false");
+      place.appendChild(clone);
+      updateTotal();
+    }
+
+    document.querySelectorAll('.block').forEach(block => {
+      block.addEventListener('dragstart', ev => {
+        ev.dataTransfer.setData("text", ev.target.closest('.block').getAttribute('data-value'));
+      });
+    });
+
+    function updateTotal() {
+      let total = 0;
+      document.querySelectorAll('.place').forEach(place => {
+        place.querySelectorAll('.block').forEach(block => {
+          total += parseFloat(block.getAttribute('data-value'));
+        });
+      });
+      document.getElementById("total").textContent = total.toFixed(3);
+    }
+
+    function clearBlocks() {
+      document.querySelectorAll('.place').forEach(place => {
+        place.innerHTML = place.getAttribute("data-place");
+      });
+      document.getElementById("total").textContent = "0.000";
+    }
+
+    function generateTarget() {
+      const target = (Math.random() * 9.999).toFixed(3);
+      document.getElementById("target-number").textContent = target;
+      document.getElementById("feedback").textContent = '';
+    }
+
+    function checkAnswer() {
+      const total = parseFloat(document.getElementById("total").textContent);
+      const target = parseFloat(document.getElementById("target-number").textContent);
+      const feedback = document.getElementById("feedback");
+
+      if (Math.abs(total - target) < 0.001) {
+        feedback.textContent = "✅ Correct! Great job!";
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = "❌ Try again!";
+        feedback.style.color = "red";
+      }
+    }
+
+    window.onload = generateTarget;
+  </script>
+</body>
+</html>
